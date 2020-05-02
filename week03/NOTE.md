@@ -434,7 +434,7 @@ Runtime
 
 * Object API / Grammar（推荐使用前3）
   * {}&emsp;.&emsp;[]&emsp;Object.defineProperty
-  * Object.create&emsp;Object.setPropertyOf&emsp;Object.getPropertyOf
+  * Object.create&emsp;Object.setProtypeOf&emsp;Object.getProtypeOf
   * new&emsp;class&emsp;extends
   * new&emsp;function&emsp;prototype
 
