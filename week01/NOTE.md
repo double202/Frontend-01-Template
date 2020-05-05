@@ -89,7 +89,7 @@
     * <code>Check-in build</code>
     * <code>Lint + Rule Check</code>
 
-  * 技术架构
+* 技术架构
 
   客户端技术架构：解决软件需求规模带来的复杂性
 
