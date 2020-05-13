@@ -73,7 +73,7 @@ var set = new Set();
                 if (
                     property.hasOwnProperty("value") && 
                     property.value != void 0 && 
-                    (property.value != null && typeof property.value === 'object') || 						(typeof property.value === 'function') && 
+                    (property.value != null && typeof property.value === 'object') || (typeof property.value === 'function') && 
                     property.value instanceof Object
                 ) {
                     queue.push({
@@ -82,16 +82,14 @@ var set = new Set();
                     });
                 }
 
-                if (property.hasOwnProperty("get") &&
-                    typeof property.get === 'function') {
+                if (property.hasOwnProperty("get") && typeof property.get === 'function') {
                     queue.push({
                         path: current.path.concat([p]),
                         object: property.get
                     });
                 }
 
-                if (property.hasOwnProperty("set") &&
-                    typeof property.set === 'function') {
+                if (property.hasOwnProperty("set") && typeof property.set === 'function') {
                     queue.push({
                         path: current.path.concat([p]),
                         object: property.set
