@@ -113,7 +113,6 @@
                     cell.classList.add('black');
                 }
 
-            
                 cell.addEventListener('mousemove', () => {
                     if (mouse) {
 
@@ -147,8 +146,12 @@
             })
         }
 
-        async function findPath(map, start, end) {
+        async function findPath(map, start, end, fromStart) {
             map = map.slice();
+
+            let table = new Array(10000).fill(Infinity);
+
+            table[start[1] * 100 + start[0]] = 0;
 
             function distance([x, y]) {
                 return (x - end[0]) ** 2 + (y - end[1]) ** 2
@@ -156,12 +159,17 @@
 
             let collection = new BinaryHeap([start], (a, b) => distance(a) - distance(b));
 
-            async function insert([x, y], pre) {
-                if (map[y * 100 + x] !== 0 || x < 0 || x >= 100 || y < 0 || y >= 100)
+            async function insert([x, y], pre, fromStart) {
+                if (map[y * 100 + x] === 1 || x < 0 || x >= 100 || y < 0 || y >= 100)
                     return ;
                 
+                if (fromStart >= table[y * 100 + x])
+                    return ;
                 // 这里表示这个点已经被访问过了
                 map[y * 100 + x] = pre;
+
+
+                table[y * 100 + x] = fromStart;
 
                 container.children[end[1] * 100 + end[0]].style.backgroundColor = 'red';
                 container.children[y * 100 + x].style.backgroundColor = 'lightgreen';
@@ -172,6 +180,7 @@
             while(collection.length) {
                 let [x, y] = collection.take();
                 // console.log(x, y)
+                let fromStart = table[y * 100 + x];
                 if (x === end[0] && y === end[1]) {
                     let path = [];
                     while(x !== start[0] || y !== start[1]) {
@@ -183,22 +192,24 @@
                     return path;
                 }
 
-                await insert([x - 1, y], [x, y]);
-                await insert([x + 1, y], [x, y]);
-                await insert([x, y - 1], [x, y]);
-                await insert([x, y + 1], [x, y]);
+                await insert([x - 1, y], [x, y], fromStart + 10);
+                await insert([x + 1, y], [x, y], fromStart + 10);
+                await insert([x, y - 1], [x, y], fromStart + 10);
+                await insert([x, y + 1], [x, y], fromStart + 10);
+
+                // 10 代表 直线距离 1，14 代表 斜线距离 1.4，同时扩大，避免浮点数运算
 
                 if (!(map[y * 100 + (x - 1)] === 1 && map[(y - 1) * 100 + x] === 1)) {
-                    await insert([x - 1, y - 1], [x, y]);
+                    await insert([x - 1, y - 1], [x, y], fromStart + 14);
                 }
                 if (!(map[y * 100 + (x - 1)] === 1 && map[(y + 1) * 100 + x] === 1)) {
-                    await insert([x - 1, y + 1], [x, y]);
+                    await insert([x - 1, y + 1], [x, y], fromStart + 14);
                 }
                 if (!(map[y * 100 + (x + 1)] === 1 && map[(y - 1) * 100 + x] === 1)) {
-                    await insert([x + 1, y - 1], [x, y]);
+                    await insert([x + 1, y - 1], [x, y], fromStart + 14);
                 }
                 if (!(map[y * 100 + (x + 1)] === 1 && map[(y + 1) * 100 + x] === 1)) {
-                    await insert([x + 1, y + 1], [x, y]);
+                    await insert([x + 1, y + 1], [x, y], fromStart + 14);
                 }
             }
 

@@ -1,0 +1,59 @@
+<script>
+    /**
+     * abcxyz xy 可以正确返回; 
+     * abcxxyz  xy 有重复的就会挂掉，归根结底 j 不应该直接归 0 
+    */ 
+    var find = (source, pattern) => {
+        let j = 0;
+        for (let i = 0; i < source.length; i ++) {
+            console.log(source[i], pattern[j])
+            if (source[i] === pattern[j]) {
+                j ++;
+            } else {
+                j = 0;
+            }
+            if (pattern.length === j)
+                return true;
+        }
+        return false;
+    }
+
+    // 优化后  abcxxyz  xy 可以正确返回, abcabcabx abcabx 会挂掉
+
+    var find = (source, pattern) => {
+        let table = new Array(pattern.length).fill(0);
+        let k = 0;
+
+        for (let j = 1; j < pattern.length; j++) {
+            if (pattern[j] === pattern[k]) {
+                k ++;
+            }
+            table[j] = k;
+        }
+
+        let j = 0;
+
+        for (let i = 0; i < source.length; i++) {
+            if (source[i] === pattern[j]) {
+                j ++;
+            } else {
+                while (source[i] !== pattern[j] && j > 0) {
+                    j - table[j - 1];
+                }
+                
+                if (source[i] === pattern[j]) {
+                    j ++;
+                } else {
+                    j = 0;
+                }
+            }
+
+            if (j === pattern.length) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+</script>
