@@ -1,0 +1,32 @@
+<style>
+  #my {
+    transform: translate(0px, 0px);
+    width: 100px;
+    height: 100px;
+    background-color: lightgreen;
+  }
+</style>
+<body>
+  <div id="my"></div>
+</body>
+<script src="./gesture.js"></script>
+<script>
+  window.addEventListener('contextmenu', event => event.preventDefault());
+  document.addEventListener('selectstart', event => event.preventDefault());
+  document.addEventListener('touchmove', event => event.preventDefault(), {passive: false});
+  enableGesture(document.body);
+
+  let x = 0, y = 0;
+  let my = document.getElementById('my');
+  document.body.addEventListener('pan', event => {
+    const {clientX, startX, clientY, startY} = event.detail;
+    my.style.transform = `translate(${x + clientX - startX}px, ${y + clientY - startY}px)`;
+  });
+
+  document.body.addEventListener('panend', event => {
+    const {clientX, startX, clientY, startY} = event.detail;
+    x = x + clientX - startX;
+    y = y + clientY - startY;
+  });
+
+</script>
