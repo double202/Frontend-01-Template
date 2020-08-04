@@ -125,7 +125,9 @@ export function enableGesture(element) {
                         startX: context.startX,
                         startY: context.startY,
                         clientX: point.clientX,
-                        clientY: point.clientY
+                        clientY: point.clientY,
+                        isFlick: isFlick,
+                        speed: speed
                     }
                 }))
             }
@@ -135,7 +137,8 @@ export function enableGesture(element) {
                     startX: context.startX,
                     startY: context.startY,
                     clientX: point.clientX,
-                    clientY: point.clientY
+                    clientY: point.clientY,
+                    isFlick: isFlick
                 }
             }))
         }

@@ -65,6 +65,7 @@ export class Wrapper {
         parent.appendChild(this.root);
 
         for (let child of this.children)
-            child.mountTo(this.root); 
+            child.mountTo(this.root);
     }
 }
+

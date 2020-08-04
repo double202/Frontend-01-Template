@@ -2,6 +2,14 @@ import { create } from './createElement';
 import { Timeline, Animation } from './animation';
 import { ease, linear } from './cubicBezier';
 
+import css from './carousel.css';
+
+// console.log(css)
+/*
+let style = document.createElement('style');
+style.innerHTML = css[0][1];
+document.documentElement.appendChild(style);
+*/
 export class Carousel {
     constructor() {
         this.children = [];
@@ -66,11 +74,13 @@ export class Carousel {
             let onPanend = event => {
                 const { clientX, startX } = event.detail;
                 let dx = clientX - startX;
+
+                // console.log('flick', event.detail.isFlick);
                 
                 let direction = 0;
-                if (dx + offset > 250) {
+                if (dx + offset > 300 || dx > 0 && event.detail.isFlick) {
                     direction = 1;
-                } else if (dx + offset < -250) {
+                } else if (dx + offset < -300 || dx < 0 && event.detail.isFlick) {
                     direction = -1;
                 }
 

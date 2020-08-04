@@ -51,17 +51,19 @@
 
         function sleep(t) {
             return new Promise(resolve => {
-                setTimeout(() => resolve, t)
+                setTimeout(resolve, t)
             })
         }
 
         function* go() {
-            green()
-            yield sleep(10000)
-            yellow()
-            yield sleep(2000)
-            red()
-            yield sleep(5000)
+            while(true) {
+                green()
+                yield sleep(10000)
+                yellow()
+                yield sleep(2000)
+                red()
+                yield sleep(5000)
+            }
         }
 
         function run(iterator) {
@@ -70,8 +72,7 @@
                 return
 
             if (value instanceof Promise)
-                value.then(() => co(iterator))
-
+                value.then(() => run(iterator))
         }
 
         function co(generator) {
@@ -81,7 +82,6 @@
         }
 
         go = co(go)
-
         
     </script>
 </body>
