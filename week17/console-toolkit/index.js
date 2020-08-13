@@ -5,11 +5,9 @@ var ttys = require('ttys');
 var stdin = ttys.stdin;
 var stdout = ttys.stdout;
 
-
 // stdout.write('Hello  World!\n');
 // stdout.write('\033[1A');
 // stdout.write('winter\n');
-
 
 const readline = require('readline');
 
